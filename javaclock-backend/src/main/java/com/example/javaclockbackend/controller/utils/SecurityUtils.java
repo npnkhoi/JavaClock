@@ -12,10 +12,13 @@ public class SecurityUtils {
             md.update(password.getBytes());
             byte[] digest = md.digest();
             ret = DatatypeConverter.printHexBinary(digest).toUpperCase();
-            return ret;
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
-        return ret; // why?
+        return ret;
+    }
+    public static boolean isStrong(String password) {
+        // Strong password means: length >= 8, >= 1 upper case, >= 1 lower case, >= 1 number, >= 1 special char
+        return password.matches("(?=^.{8,}$)(?=.*\\d)(?=.*[!@#$%^&*]+)(?![.\\n])(?=.*[A-Z])(?=.*[a-z]).*$");
     }
 }
