@@ -1,40 +1,28 @@
 package com.example.javaclockbackend.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import lombok.Data;
+
+import javax.persistence.*;
 
 @Entity
+@Data
 public class User {
     @Id
-    @GeneratedValue
-    Long Id;
-    String username;
-    String password;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private Long Id;
+
+    @Column(unique=true)
+    // I expect JPA Spring to throw error for duplicated username.
+    // For now, it haven't worked, so I check duplication manually in register controller
+    private String username;
+
+    private String password;
+    private String name;
 
     public User() {}
 
-    public Long getId() {
-        return Id;
-    }
-
-    public void setId(Long id) {
-        Id = id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
+    public User(String username, String password) {
         this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
         this.password = password;
     }
 }
