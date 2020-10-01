@@ -1,6 +1,7 @@
 <template>
-  <div class="container w-full m-0 bg-gray-400">
-    <div class="time text-red-600"> {{ currentTime }} </div>
+  <div class="clock-wrapper h-full w-full flex flex-col justify-center items-center">
+    <div class="title text-4xl"> Java Clock</div>
+    <div class="time"> {{ currentTime }} </div>
   </div>
   
 </template>
@@ -16,12 +17,20 @@ export default {
   },
   mounted: function () {
     setInterval(() => {
-      this.currentTime = moment().format('MMMM Do YYYY, h:mm:ss a');
+      this.currentTime = moment().format('HH:mm:ss');
     }, 1000);
   }
 }
 </script>
 
 <style>
+.clock-wrapper {
+  color: #7289da;
+  background-color: #23272a;
+}
 
+.time {
+  font-size: 150px;
+  letter-spacing: 7px;
+}
 </style>

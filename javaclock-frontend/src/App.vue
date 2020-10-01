@@ -1,5 +1,8 @@
 <template>
-  <Clock/> 
+  <div class="absolute h-full w-full">
+    <Clock/>
+  </div>
+  
 </template>
 
 <script>
