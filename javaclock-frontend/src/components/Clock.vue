@@ -12,7 +12,7 @@ import moment from 'moment';
 export default {
   data () {
     return {
-      currentTime: "Loading clock"
+      currentTime: "Loading"
     }
   },
   mounted: function () {
@@ -24,10 +24,6 @@ export default {
 </script>
 
 <style>
-.clock-wrapper {
-  color: #7289da;
-  background-color: #23272a;
-}
 
 .time {
   font-size: 150px;
