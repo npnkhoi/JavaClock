@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Clock from '../components/Clock.vue'
-import Home from '../components/Home.vue'
+// import Home from '../components/Home.vue'
 import Login from '../components/Login.vue'
 import Signup from '../components/Signup.vue'
 
@@ -11,10 +11,6 @@ const router = createRouter({
     routes: [
         {
             path: '/',
-            component: Home
-        },
-        {
-            path: '/clock',
             component: Clock
         },
         {
