@@ -14,7 +14,6 @@ export default {
   data () {
     return {
       currentTime: "Loading",
-      // name: this.$store.state.name
     }
   },
   computed: {
