@@ -1,5 +1,6 @@
 package com.example.javaclockbackend.controller;
 
+import com.example.javaclockbackend.controller.utils.ResponseObject;
 import com.example.javaclockbackend.controller.utils.SecurityUtils;
 import com.example.javaclockbackend.entity.User;
 import com.example.javaclockbackend.repository.UserRepository;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
+@CrossOrigin
 @RestController
 public class UserController {
     @Autowired
@@ -26,12 +28,12 @@ public class UserController {
     public ResponseEntity<String> createUser(@RequestBody User user) {
         if (userRepository.findByUsername(user.getUsername()).size() != 0) {
             // Duplicated username
-            return new ResponseEntity<>("Error: Duplicated username", HttpStatus.OK);
+            return new ResponseEntity<>("Error: Duplicated username", HttpStatus.NON_AUTHORITATIVE_INFORMATION);
             // TODO: Automate this check
         }
 
         if (!SecurityUtils.isStrong(user.getPassword())) {
-            return new ResponseEntity<>("Error: Weak password", HttpStatus.OK);
+            return new ResponseEntity<>("Error: Weak password", HttpStatus.NON_AUTHORITATIVE_INFORMATION);
         }
 
         // Hash the password
@@ -42,21 +44,29 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody User user) {
-        List<User> rets;
-        User ret = new User();
+    public ResponseObject login(@RequestBody User user) {
+        ResponseObject res = new ResponseObject();
         if (user.getUsername() != null && user.getPassword() != null) {
             // Hash the password
             user.setPassword(SecurityUtils.hashPassword(user.getPassword()));
+
+            List<User> rets;
             rets = userRepository.findByUsernameAndPassword(user.getUsername(), user.getPassword());
 
             if (rets.size() != 0) {
-                return new ResponseEntity<>("Login successfully", HttpStatus.OK);
+                User matchedUser = new User();
+                matchedUser.setName(rets.get(0).getName());
+                res.setPayload(matchedUser);
+                res.setMessage("SUCCESS");
+                res.setStatusCode(200);
             } else {
-                return new ResponseEntity<>("Wrong username or password", HttpStatus.OK);
+                res.setMessage("WRONG_INFO");
+                res.setStatusCode(203);
             }
         } else {
-            return new ResponseEntity<>("Some field(s) are missing", HttpStatus.OK);
+            res.setMessage("MISSING_FIELD");
+            res.setStatusCode(203);
         }
+        return res;
     }
 }
